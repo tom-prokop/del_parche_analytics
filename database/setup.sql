@@ -48,7 +48,7 @@ Service users:
 use role ACCOUNTADMIN;
 
 /* Set the timezone (Snowflake's default is 'America/Los_Angeles'). */
-alter account set timezone = 'America/New_York';
+alter account set timezone = 'America/Bogota';
 
 /* Set the limit for how long queries are allowed to run (Snowflake's default is 2 days!). */
 alter account set statement_timeout_in_seconds = 7200;  /* 2 hours */
@@ -71,10 +71,11 @@ create or replace network policy DBT_CLOUD
 
 
 /*** Warehouses ***/
-use role SYSADMIN;
+use role securityadmin;
 
 /* In the user sections the CREATE_ADMIN_USER and CREATE_NORMAL_USER procedure calls automatically create warehouses for those users. */
 
+use warehouse admin
 call ADMIN.UTILS.CREATE_WAREHOUSE('ADMIN', 'For admins.', array_construct('SYSADMIN', 'SECURITYADMIN', 'USERADMIN'));
 
 use warehouse ADMIN;
@@ -148,9 +149,6 @@ use role USERADMIN;
 
 call ADMIN.UTILS.CREATE_NORMAL_USER('TOM', 'ANALYTICS_DEVELOPER', 'tom @ del_parche');
     use role SECURITYADMIN;
-    alter user TOM set
-        network_policy = 'DEL_PARCHE';
-    use role USERADMIN;
 
 
 /*** Service Users ***/
